@@ -1,14 +1,14 @@
 <template>
-  <div>Strava: {{ $props }}</div>
+  <pre>Strava: {{ activities }}</pre>
 </template>
 
 <script>
 export default {
   name: "Results",
   props: {
-    stravaData: {
-      type: Object,
-      default: () => {},
+    activities: {
+      type: Array,
+      default: () => [],
     },
   },
 };

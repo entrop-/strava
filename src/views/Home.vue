@@ -1,45 +1,29 @@
 <template>
-  <Members v-if="members" :members="members" />
-  <Results v-if="stravaData" :strava-data="stravaData" />
+  <h1>Antologic challenge</h1>
+  <div class="flex flex-row">
+    <Club :club-id="runId" class="w-1/2" :config="config" />
+    <!--    <Club :club-id="bikeId" class="w-1/2" :config="config" />-->
+  </div>
 </template>
 
 <script>
-import Results from "@/components/Results";
-import strava from "strava-v3";
-import Members from "@/components/Members";
+import Club from "@/components/Club";
 
 export default {
   name: "Home",
   components: {
-    Members,
-    Results,
-  },
-  mounted() {
-    this.fetchStravaData();
-  },
-  methods: {
-    async fetchStravaData() {
-      this.members = await strava.clubs.listMembers({
-        id: process.env.VUE_APP_STRAVA_CLUB_ID,
-        ...this.config,
-      });
-
-      // this.stravaData = await strava.athlete.listClubs({
-      //   id: config.client_id,
-      //   ...config
-      // });
-    },
+    Club,
   },
   data() {
     return {
+      runId: process.env.VUE_APP_STRAVA_CLUB_RUN_ID,
+      bikeId: process.env.VUE_APP_STRAVA_CLUB_BIKE_ID,
       config: {
         access_token: process.env.VUE_APP_STRAVA_TOKEN,
         client_id: process.env.VUE_APP_STRAVA_CLIENT_ID,
         client_secret: process.env.VUE_APP_STRAVA_CLIENT_SECRET,
         redirect_uri: process.env.VUE_APP_STRAVA_REDIRECT_URI,
       },
-      stravaData: null,
-      members: [],
     };
   },
 };
