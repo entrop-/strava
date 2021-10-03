@@ -1,8 +1,18 @@
 <template>
   <h1>Antologic challenge</h1>
   <div class="flex flex-row">
-    <Club :club-id="runId" class="w-1/2" :config="config" />
-    <!--    <Club :club-id="bikeId" class="w-1/2" :config="config" />-->
+    <Club
+      :club-id="runId"
+      class="w-1/2"
+      club-name="Bieganko"
+      :config="config"
+    />
+    <Club
+      :club-id="bikeId"
+      class="w-1/2"
+      club-name="Rowerek"
+      :config="config"
+    />
   </div>
 </template>
 
