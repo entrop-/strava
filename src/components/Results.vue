@@ -1,12 +1,13 @@
 <template>
   <div v-if="activitiesByUser">
-    <div v-for="(activity, index) in activitiesByUser" :key="`act_${index}`">
-      {{ index }}: {{ prettyPrint(activity) }}
+    <div v-for="(activity, index) in sortedScores" :key="`act_${index}`">
+      {{ activity.name }}: {{ prettyPrint(activity.distance) }}
     </div>
   </div>
 </template>
 
 <script>
+import { orderBy } from "lodash";
 export default {
   name: "Results",
   props: {
@@ -24,11 +25,22 @@ export default {
       return this.activities.reduce((result, currentValue) => {
         const username =
           currentValue.athlete.firstname + " " + currentValue.athlete.lastname;
-        const aggregate = result[username] || 0;
+        const entry = result.findIndex(
+          (activity) => activity.name === username
+        );
+        const aggregate = result[entry]?.distance || 0;
 
-        result[username] = aggregate + parseFloat(currentValue.distance);
+        const data = {
+          name: username,
+          distance: aggregate + parseFloat(currentValue.distance),
+        };
+        if (entry < 0) result.push(data);
+        else result[entry] = data;
         return result;
-      }, {});
+      }, []);
+    },
+    sortedScores() {
+      return orderBy(this.activitiesByUser, "distance", "desc");
     },
   },
   methods: {
